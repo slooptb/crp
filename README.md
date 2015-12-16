@@ -4,6 +4,11 @@
 
 PageSpeed Insights score before optimization - 28/100 mobile, 30/100 desktop
 
+- Created Gruntfile.js and added minification tasks - 32/100 mobile, 34/100 desktop
+- Resized views/images/pizzeria.jpg image to 100px wide - 77/100 mobile, 91/100 desktop
+
+
+
 ### Getting started
 
 ####Part 1: Optimize PageSpeed Insights score for index.html
