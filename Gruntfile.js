@@ -1,9 +1,11 @@
 module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-imagemin');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-htmlmin');
 
     grunt.initConfig({
         imagemin: {                          // Task
-            dynamic: {
+            target: {
                 options: {
                     optimizationLevel: 3,
                     svgoPlugins: [{ removeViewBox: false }]
@@ -15,10 +17,41 @@ module.exports = function(grunt) {
                     dest: 'dist/'                  // Destination path prefix
                 }]
             }
+        },
+
+        cssmin: {
+            target: {
+                files: [{
+                    expand: true,
+                    cwd: 'src/',
+                    src: ['**/*.css'],
+                    dest: 'dist/',
+                    ext: '.css'
+                }]
+            }
+        },
+
+        htmlmin: {
+            target: {                                      // Target
+                options: {                                 // Target options
+                    removeComments: true,
+                    collapseWhitespace: true
+                },
+                files: [{
+                    expand: true,                  // Enable dynamic expansion
+                    cwd: 'src/',                   // Src matches are relative to this path
+                    src: ['**/*.{html,htm}'],      // Actual patterns to match
+                    dest: 'dist/'                  // Destination path prefix
+                }]
+            }
         }
     });
 
-    grunt.registerTask('default', ['imagemin']);
+    grunt.registerTask('default', [
+        'imagemin',
+        'cssmin',
+        'htmlmin'
+    ]);
 
 
 };
