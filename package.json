@@ -1,0 +1,28 @@
+{
+  "name": "crp",
+  "version": "1.0.0",
+  "description": "website optimization project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slooptb/crp.git"
+  },
+  "keywords": [
+    "grunt",
+    "node",
+    "optimization"
+  ],
+  "author": "Tom Butterworth",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/slooptb/crp/issues"
+  },
+  "homepage": "https://github.com/slooptb/crp#readme",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-imagemin": "^1.0.0"
+  }
+}
