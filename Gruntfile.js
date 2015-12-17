@@ -63,7 +63,7 @@ module.exports = function(grunt) {
             target: {
                 files: [{
                     expand: true,                  // Enable dynamic expansion
-                    cwd: 'src/',                   // Src matches are relative to this path
+                    cwd: 'dist/',                   // Src matches are relative to this path
                     src: ['**/*.{html,htm}'],              // Actual patterns to match
                     dest: 'dist/'                  // Destination path prefix
                 }]
@@ -73,10 +73,10 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', [
         'imagemin',
-        'inline',
+        'cssmin',
         'uglify',
         'htmlmin',
-        'cssmin'
+        'inline'
     ]);
 
 
