@@ -3,6 +3,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-inline');
 
     grunt.initConfig({
         imagemin: {                          // Task
@@ -56,14 +57,26 @@ module.exports = function(grunt) {
                     dest: 'dist/'                  // Destination path prefix
                 }]
             }
+        },
+
+        inline: {
+            target: {
+                files: [{
+                    expand: true,                  // Enable dynamic expansion
+                    cwd: 'src/',                   // Src matches are relative to this path
+                    src: ['**/*.{html,htm}'],              // Actual patterns to match
+                    dest: 'dist/'                  // Destination path prefix
+                }]
+            }
         }
     });
 
     grunt.registerTask('default', [
         'imagemin',
-        'cssmin',
+        'inline',
+        'uglify',
         'htmlmin',
-        'uglify'
+        'cssmin'
     ]);
 
 
