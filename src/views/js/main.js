@@ -431,7 +431,7 @@ var resizePizzas = function(size) {
         newWidth = 25;
             break;
       case "2":
-        newWidth = 33;
+        newWidth = 33.3;
             break;
       case "3":
         newWidth = 50;
@@ -440,7 +440,8 @@ var resizePizzas = function(size) {
         console.log("bug in sizeSwitcher");
     }
 
-    var pizzaSelector = document.querySelectorAll(('.randomPizzaContainer'));
+    // getElementsByClass name is more efficient!
+    var pizzaSelector = document.getElementsByClassName(('randomPizzaContainer'));
 
     for (var i = 0; i < pizzaSelector.length; i++) {
       pizzaSelector[i].style.width = newWidth + '%';
@@ -492,10 +493,29 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  var items = document.querySelectorAll('.mover');
+  // By using getElementsByClassName instead of querySelectorAll we achieve a better fps rate!
+  var items = document.getElementsByClassName('mover');
+
+  // This logic only needs to be called one per scroll, not once per pizza!
+  var top = document.body.scrollTop / 1250;
+
+  // We only need these five values so lets just calculate them once here rather than in the loop
+  var phaser = [
+      Math.sin(top),
+      Math.sin(top+1),
+      Math.sin(top+2),
+      Math.sin(top+3),
+      Math.sin(top+4)
+  ];
+
   for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+
+    // Grab our info from the phaser array instead of generating it here
+    var phase = phaser[i%5];
+
+    // Use transform saves us from triggering layout and paint, though performance increase in this case appears minimal
+    // Thanks to @Karol in the forums for the parseInt trick!
+    items[i].style.transform = 'translateX(' + parseInt(items[i].basicLeft + 100 * phase) + 'px)';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -515,15 +535,16 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  // 32 pizzas should be plenty to cover the screen
+  for (var i = 0; i < 32; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
-    elem.src = "images/pizza.png";
-    elem.style.height = "100px";
-    elem.style.width = "73.333px";
+    elem.src = 'images/pizza.png';
+    elem.style.height = '100px';
+    elem.style.width = '73.333px';
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    document.querySelector('#movingPizzas1').appendChild(elem);
   }
   updatePositions();
 });
