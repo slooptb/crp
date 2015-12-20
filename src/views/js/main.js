@@ -443,7 +443,7 @@ var resizePizzas = function(size) {
     // getElementsByClass name is more efficient!
     var pizzaSelector = document.getElementsByClassName(('randomPizzaContainer'));
 
-    for (var i = 0; i < pizzaSelector.length; i++) {
+    for (var i = 0, len = pizzaSelector.length; i < len; i++) {
       pizzaSelector[i].style.width = newWidth + '%';
     }
   }
@@ -459,9 +459,10 @@ var resizePizzas = function(size) {
 
 window.performance.mark("mark_start_generating"); // collect timing data
 
+var pizzasDiv = document.getElementById("randomPizzas"); // get elements once
+
 // This for-loop actually creates and appends all of the pizzas when the page loads
 for (var i = 2; i < 100; i++) {
-  var pizzasDiv = document.getElementById("randomPizzas");
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -508,14 +509,14 @@ function updatePositions() {
       Math.sin(top+4)
   ];
 
-  for (var i = 0; i < items.length; i++) {
+  // get items length once
+  for (var i = 0, len = items.length; i < len; i++) {
 
     // Grab our info from the phaser array instead of generating it here
     var phase = phaser[i%5];
 
     // Use transform saves us from triggering layout and paint, though performance increase in this case appears minimal
-    // Thanks to @Karol in the forums for the parseInt trick!
-    items[i].style.transform = 'translateX(' + parseInt(items[i].basicLeft + 100 * phase) + 'px)';
+    items[i].style.transform = 'translateX(' + 100 * phase + 'px)';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -533,18 +534,27 @@ window.addEventListener('scroll', updatePositions);
 
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
+
+  // Work out how many pizzas we need
+  var height = window.screen.height;
   var cols = 8;
   var s = 256;
-  // 32 pizzas should be plenty to cover the screen
-  for (var i = 0; i < 32; i++) {
-    var elem = document.createElement('img');
+  var rows = Math.floor(height/s);
+  var totalPizzas = rows * cols;
+
+  // declare vars here so only declared once
+  var elem;
+  var movingPizzas = document.getElementById('movingPizzas1');
+
+  for (var i = 0; i < totalPizzas; i++) {
+    elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = 'images/pizza.png';
     elem.style.height = '100px';
     elem.style.width = '73.333px';
-    elem.basicLeft = (i % cols) * s;
+    elem.style.left = (i % cols) * s + 'px';
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector('#movingPizzas1').appendChild(elem);
+    movingPizzas.appendChild(elem);
   }
   updatePositions();
 });

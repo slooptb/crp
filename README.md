@@ -25,3 +25,9 @@ Remove JANK and optimize fps to 60fps or higher
 - Applied transform to updatePositions to remove layout and paint steps.
 - Added will-change: transform to .mover css
 -- Note: this change increases time to resize pizzas to under 2ms, still within range for project requirements.
+
+More optimizations since first submit:
+- Move array.length methods into variable so only called once in loops
+- Move getElementByID outside of loops to only make one DOM call
+- Calculate number of background pizzas required
+- Add transform and backface-visibility css properties
